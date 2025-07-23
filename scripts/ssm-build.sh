@@ -96,16 +96,6 @@ fi
 mkdir -p "$SOURCE_DIR"
 mkdir -p "$BUILD_DIR"
 
-# Clean up any previous build
-rm -rf "${SOURCE_DIR:?}"/*
-rm -rf "${BUILD_DIR:?}"/*
-
-# Get and extract the source
-TAR_FILE=${VERSION}-${ITERATION}.tar.gz
-TAR_URL=https://github.com/apel/ssm/archive/$TAR_FILE
-wget --no-check-certificate "$TAR_URL" -O "$TAR_FILE"
-tar xvf "$TAR_FILE" -C "$SOURCE_DIR"
-rm -f "$TAR_FILE"
 
 # Get supplied Python version
 PY_VERSION="$(basename "$PYTHON_ROOT_DIR")"
@@ -120,6 +110,7 @@ FPM_CORE="fpm -s python \
     --iteration $ITERATION \
     -m \"Apel Administrators <apel-admins@stfc.ac.uk>\" \
     --description \"Secure Stomp Messenger (SSM).\" \
+    --config-files /etc/tmpfiles.d/run-ssm.conf \
     --no-auto-depends "
 
 # Simple Python filter for version specific FPM
